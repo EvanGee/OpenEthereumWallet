@@ -3,15 +3,9 @@ const router = express.Router()
 const path = require("path")
 
 router.get("/", (req, res) => {
-    res.send(JSON.stringify({"sup": "yo"}))
-})
-
-router.post("/createAccount", (req, res) => {
-    let password = req.body.password;
-    req.bc.accounts.createAccount(password)
-        .then((encryptedKey) => {
-            res.send(encryptedKey.address);
-        })
+    res.send(JSON.stringify({
+        "sup": "yo"
+    }))
 })
 
 
@@ -44,20 +38,21 @@ router.post("/getBalance", (req, res) => {
     }
 
     let balances = []
-    req.body.addresses.map((address, i)=>{
+    req.body.addresses.map((address, i) => {
         balances.push(req.bc.accounts.getBalance(address))
     })
 
     Promise.all(balances)
-    .then((result)=>{
-        let final = {}
-        req.body.addresses.map((address, i)=>{
-            final[address] = result[i];
+        .then((result) => {
+            let final = {}
+            req.body.addresses.map((address, i) => {
+                final[address] = result[i];
+            })
+            res.send(final)
         })
-        res.send(final)
-    })
-    .catch(console.warn)
+        .catch(console.warn)
 
 })
+
 
 module.exports = router;
