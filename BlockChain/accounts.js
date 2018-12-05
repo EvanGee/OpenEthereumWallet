@@ -15,14 +15,19 @@ module.exports = class Accounts {
 
     decryptAccount(account, password) {
         return new Promise((resolve, reject) => {
-
+            let decryptedAccount;
             fs.readFile(this.path + account, (err, data) => {
                 if (err) {
-                    console.error("could not open file")
                     console.error(err)
                     reject(err)
                 }
-                resolve(this.web3.eth.accounts.decrypt(JSON.parse(data), password))
+                try {
+                    decryptedAccount = this.web3.eth.accounts.decrypt(JSON.parse(data), password)
+                }
+                catch(err) {
+                    reject(err)
+                }
+                resolve(decryptedAccount)
             })
         })
     }
@@ -33,7 +38,6 @@ module.exports = class Accounts {
             fs.readdir(this.path, (err, files) => {
                 let promiseList = []
                 if (err) {
-                    console.error("could not open directory")
                     console.error(err)
                     reject(err)
                 }
@@ -75,9 +79,8 @@ module.exports = class Accounts {
         return new Promise((resolve, reject) => {
             let account = this.web3.eth.accounts.create()
             let encryptedAccount = account.encrypt(password);
-            fs.writeFile(this.path + account.address, JSON.stringify(encryptedAccount), (err) => {
+            fs.writeFile(this.path + encryptedAccount.address, JSON.stringify(encryptedAccount), (err) => {
                 if (err) {
-                    console.error("couldn't save account");
                     console.error(err);
                     reject(err)
                 }
@@ -98,7 +101,6 @@ module.exports = class Accounts {
                     const zeroArray = new Array(stats.size).fill(0);
                     fs.writeFile(this.path + address, zeroArray, (err) => {
                         if (err) {
-                            console.error("couldn't save account");
                             console.error(err);
                             reject(err)
 
@@ -109,8 +111,7 @@ module.exports = class Accounts {
                     })
                 })
                 .catch((err) => {
-                    console.error(err)
-                    reject("Couldn't decrypt account, so will not delete it");
+                    reject(err);
                 })
         })
     }

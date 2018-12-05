@@ -1,6 +1,6 @@
 const Web3 = require("web3")
 let web3 = new Web3("http://127.0.0.1:8500");
-let bc = require("../index")(web3).accounts
+let accounts = require("../index")(web3).accounts
 const fs = require("fs")
 
 let testAccount = {
@@ -25,7 +25,27 @@ let testAccount = {
     }
 }
 
-test("delete testAccount", () => {
+test("delete testAccount Success", () => {
+    const realPass = "12345"
+    fs.writeFile("../Accounts/" + testAccount.address, JSON.stringify(testAccount), (err) => {
+        if (err) {
+            console.error(err);
+            reject(err)
+        }
+
+        accounts.deleteAccount(testAccount.address, realPass)
+            .then((res) => {
+                expect(res).toEqual("Account file deleted");
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+    })
+})
+
+
+
+test("delete testAccount Fail, bad password", () => {
     const realPass = "12345"
     fs.writeFile("../Accounts/" + testAccount.address, JSON.stringify(testAccount), (err) => {
         if (err) {
@@ -34,15 +54,34 @@ test("delete testAccount", () => {
             reject(err)
         }
 
-        bc.deleteAccount(testAccount.address, realPass)
+        accounts.deleteAccount(testAccount.address, "1234")
             .then((res) => {
-                expect(res).toEqual("Account file deleted");
+                console.error(res)
             })
             .catch((err) => {
-                console.log(err)
+                expect(err).toEqual(new Error("Key derivation failed - possibly wrong password"))
             })
-
-
     })
 
+})
+
+
+
+test("create testAccount Success", () => {
+    const password = "12345"
+    accounts.createAccount(password)
+        .then((encryptedAccount) => {
+
+            accounts.deleteAccount(encryptedAccount.address, password)
+                .then((res) => {
+                    expect(res).toEqual("Account file deleted");
+                })
+
+                .catch((err) => {
+                    console.err(err)
+                })
+        })
+        .catch((err) => {
+            console.err(err)
+        })
 })
