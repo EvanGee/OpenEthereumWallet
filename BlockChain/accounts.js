@@ -1,11 +1,6 @@
 const fs = require("fs")
 
 
-const zeroArray = (fileSizeInBytes) => {
-    
-}
-
-
 module.exports = class Accounts {
 
     constructor(web3) {
@@ -107,7 +102,7 @@ module.exports = class Accounts {
                         }
                         
                         fs.unlinkSync(this.path + address);
-                        resolve("Account file deleted")
+                        resolve(address)
                     })
                 })
                 .catch((err) => {
@@ -121,20 +116,53 @@ module.exports = class Accounts {
 
             this.decryptAccount(account, password)
                 .then((accountObject) => {
+                    
                     this.web3.eth.accounts.wallet.add(accountObject)
                     resolve(account)
-                    //this.setDefaultAccount(accountObject.address)
                 })
                 .catch(reject)
         })
     }
 
-    setDefaultAccount(account) {
-        const wallet = this.web3.eth.accounts.wallet
-        for (let key in wallet) {
-            if (wallet[key].address === account)
-                this.web3.eth.defaultAccount = wallet[key].address
+    convertToHexAccount(address){
+        if (address[0] === '0' && address[1] === "x") {
+            return ""
         }
+        const ad = "0x" + address
+        return ad;
+    }
+
+    convertToNonHexAccount(address) {
+        if (address[0] !== '0' && address[1] !== "x") {
+            return ""
+        }
+        let newAddress = address.slice(2)
+        return newAddress.toLowerCase();
+    }
+
+    setDefaultAccount(account) {
+        return new Promise((resolve, reject) => {
+            const wallet = this.web3.eth.accounts.wallet
+            for (let key in wallet) {
+
+                if (typeof wallet[key].address != "string")  {
+                    continue;
+                }
+
+                let hex_account = wallet[key].address.toUpperCase()
+                let converted_hex_account = this.convertToHexAccount(account).toUpperCase()
+    
+                if (hex_account === converted_hex_account) {
+                    this.web3.eth.defaultAccount = wallet[key].address
+                    resolve(this.web3.eth.defaultAccount)
+                }
+            }
+            reject("couldn't set default")
+        })
+    }
+
+    getDefaultAccount() {
+        return this.web3.eth.defaultAccount;    
     }
 
     send(transactionObject) {

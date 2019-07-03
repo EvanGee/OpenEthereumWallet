@@ -2,17 +2,7 @@ const express = require("express")
 const router = express.Router()
 
 const path = require("path")
-
-
-/*
-const auth = (req, res, next) => {
-    const auth = new bc.auth(req.web3, false)
-    if (!auth.validate(req.body.auth.token, req.body.auth.address))
-        return
-       next()
-}
-router.use(auth)
-*/
+//auth
 
 
 router.get("/", (req, res) => {
@@ -106,18 +96,7 @@ router.get("/getSigners", (req, res) => {
         .catch(console.error)
 })
 
-//No function accounts.send
-router.post("/send", (req, res)=> {
-    console.log("sending", req.body)
 
-    req.bc.accounts.send(req.body)
-        .then((data)=>{
-            res.send(data)
-        })
-        .catch(()=>{
-            res.send("error in sending")
-        })
-    })
 
 
 module.exports = router;

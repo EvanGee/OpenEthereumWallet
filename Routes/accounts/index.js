@@ -31,17 +31,21 @@ router.get("/getPublicAddresses", (req, res) => {
 
 //request must have a addresses field that takes a list
 //{addresses:[0x1234...]}
-router.post("/getBalance", (req, res) => {
+router.post("/getBalances", (req, res) => {
+
     if (Array.isArray(req.body.addresses) === false) {
-        res.send("the request was poorly formatted, need this: {addresses:[0x1234...]}")
+        res.send("the request was poorly formatted, need this: {addresses:[0x1234...]")
         return;
     }
+    
 
+    console.log("getting Balances")
     let balances = []
     req.body.addresses.map((address, i) => {
         balances.push(req.bc.accounts.getBalance(address))
     })
 
+    
     Promise.all(balances)
         .then((result) => {
             let final = {}
@@ -50,7 +54,14 @@ router.post("/getBalance", (req, res) => {
             })
             res.send(final)
         })
-        .catch(console.warn)
+        .catch((err)=>{
+            res.send("couldn't get balances" + err)
+        })
+
+})
+
+router.get("/getDefault", (req, res) => {
+    
 
 })
 

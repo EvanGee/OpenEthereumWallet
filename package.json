@@ -11,6 +11,7 @@
   "license": "",
   "dependencies": {
     "axios": "^0.18.0",
+    "bcrypt": "^3.0.3",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "js-sha3": "^0.8.0",

@@ -10,4 +10,5 @@ module.exports = (web3) => ({
     contracts : contracts(web3),
     clique,
     accounts : new Accounts(web3),
+    web3
 })
