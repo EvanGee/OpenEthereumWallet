@@ -2,13 +2,20 @@ const express = require("express")
 const router = express.Router()
 
 const path = require("path")
-//auth
-
 
 router.get("/", (req, res) => {
     console.log("request" + req.body)
 })
 
+
+router.post("/getContractAddress", (req, res)=>{
+    if (!req.body.hasOwnProperty("id")) {
+        res.send("error:id field undefined, send a request with id eg, {id: 'unique identifier'}")
+        return;
+    }
+
+    res.send(req.bc.contracts.getAddress(req.body.id))
+})
 
 router.post("/deploy", (req, res) => {
     if (!req.body.hasOwnProperty("contract")) {
@@ -37,17 +44,6 @@ router.post("/deploy", (req, res) => {
             console.log(err)
         })
 })
-
-
-router.post("/getContractAddress", (req, res)=>{
-    if (!req.body.hasOwnProperty("id")) {
-        res.send("error:id field undefined, send a request with id eg, {id: 'unique identifier'}")
-        return;
-    }
-
-    res.send(req.bc.contracts.getAddress(req.body.id))
-})
-
 
 router.post("/call", (req, res) => {
     if (!req.body.hasOwnProperty("funcName")){
@@ -85,18 +81,6 @@ router.post("/estimate", (req, res) => {
     console.log(req.web3.eth.estimateGas({to: "0xEDA8A2E1dfA5B93692D2a9dDF833B6D7DF6D5f93", amount: web3.toWei(1, "ether")}))
 
 })
-
-
-router.get("/getSigners", (req, res) => {
-    console.log("getting signers")
-    req.bc.clique.getSigners(req.web3)
-        .then((data) => {
-            res.send(data.data.result)
-        })
-        .catch(console.error)
-})
-
-
 
 
 module.exports = router;
