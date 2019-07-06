@@ -38,8 +38,6 @@ router.post("/getBalances", (req, res) => {
         return;
     }
     
-
-    console.log("getting Balances")
     let balances = []
     req.body.addresses.map((address, i) => {
         balances.push(req.bc.accounts.getBalance(address))
@@ -60,10 +58,79 @@ router.post("/getBalances", (req, res) => {
 
 })
 
-router.get("/getDefault", (req, res) => {
+// {newAccount: {password: somevalue}}
+router.post("/newAccount", (req, res) => {
     
+    let msg = req.body
+    if (msg.hasOwnProperty("newAccount")) {
+    
+        if (!msg.newAccount.hasOwnProperty("password")) {
+            res.send({action: "error", payload: "send with fromat: action: {newAccount:{password:example1234}}"});
+            return false;
+        }
 
+        req.bc.accounts.createAccount(msg.newAccount.password)
+        .then((encryptedKey) => {
+            res.send({action:"newAccount", payload: encryptedKey.address});
+            return true
+        })
+        .catch((err)=>{
+            res.send({action: "error", payload: err});
+        })
+    }
 })
 
+//{deleteAccount:{account:"0x12345...", password: "somepassword"}}});
+router.post("/deleteAccount", (req, res) => {
+    let msg = req.body
+        if (msg.hasOwnProperty("deleteAccount")) {
+        
+            if (!msg.deleteAccount.hasOwnProperty("account")) {
+                res.send({action: "error", payload: {deleteAccount:{account:"0x12345...", password: "somepassword"}}});
+                return false;
+            }
+    
+            if (!msg.deleteAccount.hasOwnProperty("password")) {
+                res.send({action: "error", payload: {deleteAccount:{account:"0x12345...", password:"somepassword"}}});
+                return false;
+            }
+    
+            req.bc.accounts.deleteAccount(msg.deleteAccount.account, msg.deleteAccount.password)
+            .then((data) => {
+                res.send({action:"deleteAccount", payload: data});
+            })
+            .catch((err)=>{
+                res.send({action: "error", payload: err});
+            })
+        }
+})
+
+router.post("/changeDefault", (req, res) => {
+    let msg = req.body
+    if (msg.hasOwnProperty("changeDefault")) {
+        if (!msg.changeDefault.hasOwnProperty("account")) {
+            res.send({action: "error", payoad: "action no account field: {changeDefault:{account:0x123..., password:1234}}"});
+            return
+        }
+            
+        if (!msg.changeDefault.hasOwnProperty("password")) {
+            res.send({action: "error", payload: "give me a password you nub {changeDefault:{account:0x123..., password:1234}}"});
+            return
+        }
+
+        req.bc.accounts.loadWallet(msg.changeDefault.account, msg.changeDefault.password)
+        .then((account) => {
+            req.bc.accounts.setDefaultAccount(account)
+            res.send({action:"changeDefault", payload: req.web3.eth.defaultAccount});
+        })
+        .catch(() => {
+            res.send({action: "error", payload: "failed changing default account"});
+        })
+    }
+})
+
+router.get("/defaultAccount", (req, res) => {
+    res.send({action:"getDefault", payload: req.web3.eth.defaultAccount})
+})
 
 module.exports = router;

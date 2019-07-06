@@ -8,6 +8,6 @@ const protectedAccounts = require("./protected")
 router.use(middlewear);
 router.use("/accounts", accounts);
 router.use("/blockchain", blockchainRoute);
-//router.use("/protected/accounts", protectedAccounts);
+router.use("/protected", protectedAccounts);
 
 module.exports = router;

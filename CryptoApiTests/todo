@@ -1,1 +1,3 @@
-change providers in the api
+change logs to write to a log file rather than stdout
+remove password from api, instead, get the user to type into stdin
+
