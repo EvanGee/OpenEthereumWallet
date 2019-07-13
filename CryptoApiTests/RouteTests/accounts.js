@@ -1,7 +1,7 @@
 const axios = require("axios")
 const url = "http://127.0.0.1:3030/accounts/"
 
-
+/*
 // {newAccount: {password: somevalue}}
 axios.post(url + "newAccount", {newAccount: {password:"pass1234"}})
 .then((res)=>{
@@ -18,11 +18,10 @@ axios.post(url + "newAccount", {newAccount: {password:"pass1234"}})
   console.log(err)
 })
 
-
+*/
 //get accounts, then get balances
 axios.get("http://127.0.0.1:3030/accounts/getPublicAddresses")
 .then((res)=>{
-
    axios.post(url + "getBalances", {addresses:res.data})
   .then((res)=>{console.log(res.data)})
   .catch(console.log)

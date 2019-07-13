@@ -17,6 +17,14 @@ router.post("/getContractAddress", (req, res)=>{
     res.send(req.bc.contracts.getAddress(req.body.id))
 })
 
+/*
+ {
+     contract: "contract NAME",
+     gas: '12345' //in wei
+     id: '123' // this is can be used to get the address later, remember what ID you set it as 
+     args: [] //optional
+ }
+*/
 router.post("/deploy", (req, res) => {
     if (!req.body.hasOwnProperty("contract")) {
         res.send("error: contract field undefined, send a request with eg, {contract: 'contractName'}")
@@ -40,11 +48,21 @@ router.post("/deploy", (req, res) => {
  
         })
         .catch((err) => {
-            res.send("contract failed to deploy")
+            res.send("contract failed to deploy" + err)
             console.log(err)
         })
 })
 
+/*
+    {
+        funcName: "name",
+        args: [],
+        gas: "123",
+        contract: "PlayerRegistry"
+        id: 1 //optional or can use address
+        value: 12333 //if function is payable
+    }
+    */
 router.post("/call", (req, res) => {
     if (!req.body.hasOwnProperty("funcName")){
         res.send("error: function field undefined, send a request with eg, {contract: name, function: 'foo', args: '[bar, stuff], gas: 21000, value: 10000'}")
@@ -77,9 +95,7 @@ router.post("/call", (req, res) => {
 })
 
 router.post("/estimate", (req, res) => {
-    
-    console.log(req.web3.eth.estimateGas({to: "0xEDA8A2E1dfA5B93692D2a9dDF833B6D7DF6D5f93", amount: web3.toWei(1, "ether")}))
-
+    //console.log(req.web3.eth.estimateGas({to: "0xEDA8A2E1dfA5B93692D2a9dDF833B6D7DF6D5f93", amount: web3.toWei(1, "ether")}))
 })
 
 

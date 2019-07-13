@@ -3,6 +3,8 @@ const router = express.Router()
 const conf = require("../conf.js")
 const Web3 = require("web3")
 
+
+
 const setDefault = (bc) => {
 
   bc.accounts.getPublicAddresses()
@@ -23,13 +25,20 @@ const setDefault = (bc) => {
   })
 }
 
+if (typeof web3 === 'undefined') {
+  web3 = new Web3(conf.web3HttpHost);
+  console.log("set host: ", web3.currentProvider.host)
+  bc = require("../../BlockChain")(web3);
+  setDefault(bc)
+}
+
 const web3Inject = (req, res, next) => {
     if (typeof web3 === 'undefined') {
       web3 = new Web3(conf.web3HttpHost);
       req.web3 = web3;
     }
     req.web3 = web3
-    req.bc = require("../../BlockChain")(req.web3);
+    req.bc = require("../../BlockChain")(web3);
 
     if (req.web3.eth.defaultAccount == null)
       setDefault(req.bc)
