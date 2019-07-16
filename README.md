@@ -12,7 +12,7 @@ useful it will be in the futures, check out Cleff, it does a similar thing I thi
 I have node 8.10
 ```
 $npm install
-#node App.js
+$node App.js
 ```
 
 # API
