@@ -8,6 +8,13 @@ you can use it however you want, I wanted to give back to the Ethereum community
 useful it will be in the futures, check out Cleff, it does a similar thing I think. But there are more devs on it than just me.
 
 
+# running 
+I have node 8.10
+```
+$npm install
+#node App.js
+```
+
 # API
 Parameters are the application-type/json body of your request
 it will return json for most of the responses 
