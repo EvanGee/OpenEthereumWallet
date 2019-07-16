@@ -17,19 +17,19 @@ url "http://127.0.0.1:port or whatever it is listening to. All the parameters ar
 ## Accounts:
 
 url = http//127.0.0.1:port/accounts  
-GET __**/getAccounts**__  
+### GET __**/getAccounts**__  
 Paramaters: [NoParams]  
 returns: a list of all encrypted keys, this is useful for exporting them, do so with the greatest of care.  
 
-GET __**/getPublicAddresses**__   
+### GET __**/getPublicAddresses**__   
 Paramaters:[NoParams]   
 returns: a list of all public address  
 
-GET __**/defaultAddress**__  
+### GET __**/defaultAddress**__  
 Paramaters: [NoParams]  
 returns: {action:"getDefault", payload: defaultAddress}  
 
-POST __**/getBalances**__   
+### POST __**/getBalances**__   
 Paramaters: 
 ```
 {
@@ -38,7 +38,7 @@ Paramaters:
 ```
 returns: a list with the balances of all chosen accounts  
 
-POST __**/newAccount**__  
+### POST __**/newAccount**__  
 Paramaters: 
 ```
 {
@@ -47,7 +47,7 @@ newAccount : {password: somevalue}
 ```
 returns: {action:"newAccount", payload: publicAddress}  
 
-POST __**/deleteAccount**__  
+### POST __**/deleteAccount**__  
 Paramaters: 
 ```
 {
@@ -59,7 +59,7 @@ deleteAccount: {
 ```
 returns: {action:"deleteAccount", payload: addressDeleted}  
 
-POST __**/changeDefault**__   
+### POST __**/changeDefault**__   
 Paramaters: 
 ```
 {
@@ -71,8 +71,9 @@ changeDefault: {
 ```
 returns: {action:"changeDefault", payload: newDefaultAddress} 
 ## BlockChain  
-url = http://127.0.0.1:port/blockchain  
-POST [/getContractAddress]  
+url = http://127.0.0.1:port/blockchain
+
+### POST /getContractAddress  
 Paramaters: 
 ```
 {
@@ -81,7 +82,7 @@ id: "123..."
 ```
 returns: the contract address of the id you deployed it with  
 
-POST /deploy  
+### POST /deploy  
 Paramaters:  
 ```  
 {  
@@ -93,7 +94,7 @@ args: [] //optional, these are your arguments to the constructor
  ```    
 returns: the address of the deployed contract  
 
-POST /call  
+### POST /call  
 Parameters: 
 ```
 {   
@@ -108,7 +109,7 @@ Parameters:
 ```
 returns the transaction object
 (this one is yet to be tested and implmented fully)  
-POST /getEvents  
+### POST /getEvents  
 Parameters: 
 ```
 {  
@@ -122,7 +123,7 @@ Parameters:
 returns {events}  
   
 (this one is yet to be tested and implmented fully)  
-POST /estimate  
+### POST /estimate  
 Parameters: 
 ```  
 {  
