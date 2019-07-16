@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const conf = require("../conf.js")
+const conf = require("../../conf.js")
 const Web3 = require("web3")
 
 

@@ -45,6 +45,7 @@ router.post("/deploy", (req, res) => {
         .then((contract) => {;
             req.bc.contracts.saveAddress(req.body.id, contract._address)
             res.send(contract._address)
+            console.log(contract)
  
         })
         .catch((err) => {
@@ -92,6 +93,37 @@ router.post("/call", (req, res) => {
     .catch((err)=>{
         res.send(req.body.funcName + ' function not called error: '+ err)
     })
+})
+
+router.post("/getEvents", (req, res) => {
+    if (!req.body.hasOwnProperty("contract")){
+        res.send("error: contract field undefined, send a request with eg, {contract: name}")
+        return;
+    }
+    if (!req.body.hasOwnProperty("id") && !req.body.hasOwnProperty("address")){
+        res.send("error: id and address field undefined, you need at least one field with either address of id")
+        return;
+    }
+    if (!req.body.hasOwnProperty("eventName")){
+        res.send("error: eventName field undefined, send a request with eg, {eventName: name}")
+        return;
+    }
+    if (!req.body.hasOwnProperty("fromBlock")){
+        res.send("error: fromBlock field undefined, send a request with eg, {fromBlock: 0}")
+        return;
+    }
+    if (!req.body.hasOwnProperty("toBlock")){
+        res.send("error: toBlock field undefined, send a request with eg, {toBlock: latest}")
+        return;
+    }
+    
+
+    req.bc.contracts.getAllEvents(req.body.id, req.body.address, req.body.contract, req.body.eventName, req.body.fromBlock, req.body.toBlock)
+    .then((events)=>{
+        res.send(events)
+    })
+    .catch(console.error)
+
 })
 
 router.post("/estimate", (req, res) => {

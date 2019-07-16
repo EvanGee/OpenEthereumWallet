@@ -1,17 +1,24 @@
 //Environment variables
 const path = require("path")
-const contractsPath = path.resolve(__dirname, "../../",  "truffle/build/contracts");
-const addressPath = path.resolve(__dirname, 'Contracts', 'addresses.js')
+const conf = require("../conf.js")
+
+const contractsPath = conf.contractsPath
+
+const addressPath = path.resolve(__dirname, ".",  "addresses.js");
 const fs = require("fs")
-//const addresses = require("./addresses")
+
+const addresses = require("./addresses")
 
 const getContract = (web3, contractName, address) => {
-
     const contractJson = require(path.resolve(contractsPath, contractName))
     const abi = contractJson.abi;
     const contract = new web3.eth.Contract(abi, address)
     return contract
+}
 
+const getAddress =  (id) => {
+    var addresses = require(addressPath)
+    return addresses[id];
 }
 
 module.exports = (web3) => ({
@@ -22,7 +29,6 @@ module.exports = (web3) => ({
 
         const contPath = path.resolve(contractsPath, contractName)
         const contractJson = require(contPath)
-
         const Contract = new web3.eth.Contract(contractJson.abi)
 
         //returns newContractInstance on success
@@ -109,8 +115,40 @@ module.exports = (web3) => ({
         })
     },
     getAddress: (id) => {
-        var addresses = require(addressPath)
-        return addresses[id];
+        return getAddress(id)
+    },
+
+    getAllEvents:  (id, address, contractName, eventName, fromBlock, toBlock) => {
+        return new Promise(async (resolve, reject)=>{
+            let addr = address
+            if (addr == undefined)
+                addr = getAddress(id);
+    
+            const Contract = getContract(web3, contractName, addr) 
+            console.log(id, addr, contractName, eventName, fromBlock, toBlock)
+
+            console.log(Contract)
+            
+            Contract.events.addToLogs({
+                filter: {},
+                fromBlock: 0,
+                toBlock: 'latest',
+                }, function(error, event){ console.log(event); })
+
+
+
+            web3.eth.getPastLogs( {
+                from: fromBlock,
+                toBlock: toBlock,
+                address: addr
+            }, (error, events) => {
+                if (error)
+                    reject(error)
+                console.log(events)
+                resolve(events)
+            })
+
+        })
     }
 
 })
