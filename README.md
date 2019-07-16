@@ -9,13 +9,13 @@ useful it will be in the futures, check out Cleff, it does a similar thing I thi
 
 
 # API
-you can use any http request client for these, the following api will be described 
-with TYPE of request [end point] [parameters, what it returns] send your requests to the
-url "http://127.0.0.1:port or whatever it is listening to. All the parameters are application/type json.
+Parameters are the application-type/json body of your request
+it will return json for most of the responses 
+In the future I want to make everything returns {action, payload} format, so it is easy to structure
+in a front end application
 
 
-## Accounts:
-
+## Accounts:  
 url = http//127.0.0.1:port/accounts  
 ### GET __**/getAccounts**__  
 Paramaters: None  
