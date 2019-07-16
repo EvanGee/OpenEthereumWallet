@@ -108,8 +108,8 @@ Parameters:
 }
 ```
 returns the transaction object
-(this one is yet to be tested and implmented fully)  
 ### POST /getEvents  
+(this one is yet to be tested and implmented fully)  
 Parameters: 
 ```
 {  
@@ -122,8 +122,8 @@ Parameters:
 ```  
 returns {events}  
   
-(this one is yet to be tested and implmented fully)  
 ### POST /estimate  
+(this one is yet to be tested and implmented fully)  
 Parameters: 
 ```  
 {  
