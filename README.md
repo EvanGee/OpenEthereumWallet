@@ -45,8 +45,51 @@ POST __**/changeDefault**__
 Paramaters: {changeDefault:{account:"0x12345...", password: "somepassword"}}   
 returns: {action:"changeDefault", payload: newDefaultAddress} 
 
-## BlockChain
-url = http://127.0.0.1:port/blockchain
+## BlockChain  
+url = http://127.0.0.1:port/blockchain  
+POST [/getContractAddress]  
+Paramaters: {id:}  
+returns: the contract address of the id you deployed it with  
 
-POST [/getContractAddress] [{id:}] returns the contract address of the id you deployed it with
-POST [/deploy][{}]
+POST __**/deploy**__  
+Paramaters:  {  
+contract: "ContractName",  
+gas: '50000'  
+id: '123' // this is can be used to get the address later, remember what ID you set it as   
+args: [] //optional, these are your arguments to the constructor    
+ }  
+returns: the address of the deployed contract  
+
+POST __**/call**__  
+Parameters: {  
+        funcName: "functionName",  
+        args: [], //these are your arguements to your function  
+        gas: "50000",  
+        contract: "ContractName"  
+        id: "123" //optional or can use address instead, need etiher id or address  
+        address: "0x1234...."",  
+        value: 12333 //if function call is payable  
+}  
+(this one is yet to be tested and implmented fully)  
+POST __**/getEvents**__  
+Parameters: {  
+        contract: "ContractName"  
+        id: "123" //optional or can use address instead, need etiher id or address  
+        address: "0x1234...."",  
+        fromBlock: 0,  
+        toBlock: "latest",  
+}  
+returns {events}  
+  
+(this one is yet to be tested and implmented fully)  
+POST __**/estimate**__  
+Parameters: {  
+        funcName: "functionName",  
+        args: [], //these are your arguements to your function  
+        gas: "50000",  
+        contract: "ContractName"  
+        id: "123" //optional or can use address instead, need etiher id or address  
+        address: "0x1234...."",  
+}  
+returns amount in wei  
+
