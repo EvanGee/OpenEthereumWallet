@@ -30,66 +30,108 @@ Paramaters: [NoParams]
 returns: {action:"getDefault", payload: defaultAddress}  
 
 POST __**/getBalances**__   
-Paramaters: {'addresses':'[...0x1234, ...0x1234]'}  
+Paramaters: 
+```
+{
+'addresses':'[...0x1234, ...0x1234]'
+}
+```
 returns: a list with the balances of all chosen accounts  
 
 POST __**/newAccount**__  
-Paramaters: {newAccount : {password: somevalue}}  
+Paramaters: 
+```
+{
+newAccount : {password: somevalue}
+}
+```
 returns: {action:"newAccount", payload: publicAddress}  
 
 POST __**/deleteAccount**__  
-Paramaters: {deleteAccount:{account:"0x12345...", password: "somepassword"}}  
+Paramaters: 
+```
+{
+deleteAccount: {
+    account:"0x12345...", 
+    password: "somepassword"
+    }
+}
+```
 returns: {action:"deleteAccount", payload: addressDeleted}  
 
 POST __**/changeDefault**__   
-Paramaters: {changeDefault:{account:"0x12345...", password: "somepassword"}}   
+Paramaters: 
+```
+{
+changeDefault: {
+ account:"0x12345...", 
+ password: "somepassword"
+ }
+}
+```
 returns: {action:"changeDefault", payload: newDefaultAddress} 
-
 ## BlockChain  
 url = http://127.0.0.1:port/blockchain  
 POST [/getContractAddress]  
-Paramaters: {id:}  
+Paramaters: 
+```
+{
+id: "123..."
+}
+```
 returns: the contract address of the id you deployed it with  
 
-POST __**/deploy**__  
-Paramaters:  {  
+POST /deploy  
+Paramaters:  
+```  
+{  
 contract: "ContractName",  
 gas: '50000'  
 id: '123' // this is can be used to get the address later, remember what ID you set it as   
 args: [] //optional, these are your arguments to the constructor    
- }  
+}
+ ```    
 returns: the address of the deployed contract  
 
-POST __**/call**__  
-Parameters: {  
-        funcName: "functionName",  
-        args: [], //these are your arguements to your function  
-        gas: "50000",  
-        contract: "ContractName"  
-        id: "123" //optional or can use address instead, need etiher id or address  
-        address: "0x1234...."",  
-        value: 12333 //if function call is payable  
-}  
+POST /call  
+Parameters: 
+```
+{   
+    funcName: "functionName",  
+    args: [], //these are your arguements to your function  
+    gas: "50000",  
+    contract: "ContractName"  
+    id: "123" //optional or can use address instead, need etiher id or address  
+    address: "0x1234...."",  
+    value: 12333 //if function call is payable 
+}
+```
+returns the transaction object
 (this one is yet to be tested and implmented fully)  
-POST __**/getEvents**__  
-Parameters: {  
+POST /getEvents  
+Parameters: 
+```
+{  
         contract: "ContractName"  
         id: "123" //optional or can use address instead, need etiher id or address  
         address: "0x1234...."",  
         fromBlock: 0,  
         toBlock: "latest",  
-}  
+}
+```  
 returns {events}  
   
 (this one is yet to be tested and implmented fully)  
-POST __**/estimate**__  
-Parameters: {  
+POST /estimate  
+Parameters: 
+```  
+{  
         funcName: "functionName",  
         args: [], //these are your arguements to your function  
         gas: "50000",  
         contract: "ContractName"  
         id: "123" //optional or can use address instead, need etiher id or address  
         address: "0x1234...."",  
-}  
+}
+```  
 returns amount in wei  
-
