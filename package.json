@@ -10,13 +10,14 @@
   "author": "janeasystems",
   "license": "",
   "dependencies": {
-    "axios": "^0.18.0",
-    "bcrypt": "^3.0.3",
+    "axios": "^0.19.0",
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "js-sha3": "^0.8.0",
+    "readline-sync": "^1.4.9",
     "scrypt-js": "^2.0.4",
     "scryptsy": "^2.0.0",
-    "web3": "^1.0.0-beta.36"
+    "web3": "1.0.0-beta.36"
   }
 }

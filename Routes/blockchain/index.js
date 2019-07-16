@@ -2,14 +2,29 @@ const express = require("express")
 const router = express.Router()
 
 const path = require("path")
-//auth
-
 
 router.get("/", (req, res) => {
     console.log("request" + req.body)
 })
 
 
+router.post("/getContractAddress", (req, res)=>{
+    if (!req.body.hasOwnProperty("id")) {
+        res.send("error:id field undefined, send a request with id eg, {id: 'unique identifier'}")
+        return;
+    }
+
+    res.send(req.bc.contracts.getAddress(req.body.id))
+})
+
+/*
+ {
+     contract: "contract NAME",
+     gas: '12345' //in wei
+     id: '123' // this is can be used to get the address later, remember what ID you set it as 
+     args: [] //optional
+ }
+*/
 router.post("/deploy", (req, res) => {
     if (!req.body.hasOwnProperty("contract")) {
         res.send("error: contract field undefined, send a request with eg, {contract: 'contractName'}")
@@ -30,25 +45,25 @@ router.post("/deploy", (req, res) => {
         .then((contract) => {;
             req.bc.contracts.saveAddress(req.body.id, contract._address)
             res.send(contract._address)
+            console.log(contract)
  
         })
         .catch((err) => {
-            res.send("contract failed to deploy")
+            res.send("contract failed to deploy" + err)
             console.log(err)
         })
 })
 
-
-router.post("/getContractAddress", (req, res)=>{
-    if (!req.body.hasOwnProperty("id")) {
-        res.send("error:id field undefined, send a request with id eg, {id: 'unique identifier'}")
-        return;
+/*
+    {
+        funcName: "name",
+        args: [],
+        gas: "123",
+        contract: "PlayerRegistry"
+        id: 1 //optional or can use address
+        value: 12333 //if function is payable
     }
-
-    res.send(req.bc.contracts.getAddress(req.body.id))
-})
-
-
+    */
 router.post("/call", (req, res) => {
     if (!req.body.hasOwnProperty("funcName")){
         res.send("error: function field undefined, send a request with eg, {contract: name, function: 'foo', args: '[bar, stuff], gas: 21000, value: 10000'}")
@@ -80,23 +95,40 @@ router.post("/call", (req, res) => {
     })
 })
 
-router.post("/estimate", (req, res) => {
+router.post("/getEvents", (req, res) => {
+    if (!req.body.hasOwnProperty("contract")){
+        res.send("error: contract field undefined, send a request with eg, {contract: name}")
+        return;
+    }
+    if (!req.body.hasOwnProperty("id") && !req.body.hasOwnProperty("address")){
+        res.send("error: id and address field undefined, you need at least one field with either address of id")
+        return;
+    }
+    if (!req.body.hasOwnProperty("eventName")){
+        res.send("error: eventName field undefined, send a request with eg, {eventName: name}")
+        return;
+    }
+    if (!req.body.hasOwnProperty("fromBlock")){
+        res.send("error: fromBlock field undefined, send a request with eg, {fromBlock: 0}")
+        return;
+    }
+    if (!req.body.hasOwnProperty("toBlock")){
+        res.send("error: toBlock field undefined, send a request with eg, {toBlock: latest}")
+        return;
+    }
     
-    console.log(req.web3.eth.estimateGas({to: "0xEDA8A2E1dfA5B93692D2a9dDF833B6D7DF6D5f93", amount: web3.toWei(1, "ether")}))
+
+    req.bc.contracts.getAllEvents(req.body.id, req.body.address, req.body.contract, req.body.eventName, req.body.fromBlock, req.body.toBlock)
+    .then((events)=>{
+        res.send(events)
+    })
+    .catch(console.error)
 
 })
 
-
-router.get("/getSigners", (req, res) => {
-    console.log("getting signers")
-    req.bc.clique.getSigners(req.web3)
-        .then((data) => {
-            res.send(data.data.result)
-        })
-        .catch(console.error)
+router.post("/estimate", (req, res) => {
+    //console.log(req.web3.eth.estimateGas({to: "0xEDA8A2E1dfA5B93692D2a9dDF833B6D7DF6D5f93", amount: web3.toWei(1, "ether")}))
 })
-
-
 
 
 module.exports = router;

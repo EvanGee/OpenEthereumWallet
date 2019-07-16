@@ -2,13 +2,12 @@
 
 
 const Accounts = require("./accounts")
-const clique = require("./clique")
 const contracts = require("./contracts")
+const Auth = require("./auth")
 
-module.exports = (web3) => ({
-    
+module.exports = (web3) => ({    
     contracts : contracts(web3),
-    clique,
     accounts : new Accounts(web3),
+    auth : new Auth(web3),
     web3
 })

@@ -1,22 +1,29 @@
 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const utils = require("../utils.js")
+const utils = require("./utils.js")
 const read = utils.read
 const write = utils.write
+const { question } = require('readline-sync');
 
 module.exports = class pass {
 
     constructor() {
-        this.path = __dirname + "/password"
-        this.authenticate = this.authenticate.bind(this);
+        this.path = __dirname + "/Auth/password"
+        this.authenticatePassword = this.authenticatePassword.bind(this);
+        this.comparePassword = this.comparePassword.bind(this)
+        this.storePassword = this.storePassword.bind(this)
+        this.getPassword = this.getPassword.bind(this)
+        this.hash = this.hash.bind(this)
+
     }
     
-
+    //these could be used for database fetching if you want
     getPassword() {
         return read(this.path)
     }
 
+    //these could be used for database fetching if you want
     storePassword(pass) {
         return new Promise((resolve, reject)=>{
             this.hash(pass)
@@ -40,7 +47,7 @@ module.exports = class pass {
         })
     }
 
-    compare(plaintextPassword) {
+    comparePassword(plaintextPassword) {
         return new Promise((resolve, reject)=>{
 
             this.getPassword().then((hash)=>{
@@ -52,7 +59,7 @@ module.exports = class pass {
         })
     }
 
-    authenticate(req, res, next) {   
+    authenticatePassword(req, res, next) {   
         this.compare(req.query.auth).then((res)=>{
             if (res === true)
                 next()
@@ -65,4 +72,14 @@ module.exports = class pass {
         })
     }
 
+    getUserConfirmation(req, res) {
+        return new Promise((resolve, reject)=>{
+            console.log("accept request type:" + req.method + " request for:" + req.url + " from user agent:" + req.headers["user-agent"] +" host:" + req.headers.host+ "?")
+            const answer = question("[y] or [n]")
+            if (answer === 'y') {
+                resolve()
+            }
+            reject()
+        })
+    }
 }

@@ -156,6 +156,7 @@ module.exports = class Accounts {
                     this.web3.eth.defaultAccount = wallet[key].address
                     resolve(this.web3.eth.defaultAccount)
                 }
+
             }
             reject("couldn't set default")
         })
