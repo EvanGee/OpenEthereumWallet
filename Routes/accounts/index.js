@@ -129,7 +129,7 @@ router.post("/changeDefault", (req, res) => {
     }
 })
 
-router.get("/defaultAccount", (req, res) => {
+router.get("/defaultAddress", (req, res) => {
     res.send({action:"getDefault", payload: req.web3.eth.defaultAccount})
 })
 

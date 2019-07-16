@@ -1,6 +1,6 @@
 
 const express = require('express')
-
+const conf = require("./conf")
 const bodyParser = require('body-parser')
 
 const app = express()
@@ -12,7 +12,7 @@ const router = require("./Routes");
 
 app.use(router);
 
-const port = 3030
+const port = conf.port
 var http = require('http').Server(app);
 
 http.listen(port, function () {
