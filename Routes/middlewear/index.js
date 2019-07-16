@@ -64,7 +64,8 @@ const log = (req, res, next) => {
 router.use(log)
 router.use(web3Inject)
 router.use(setHeaders)
-//router.use(auth)
+if (conf.userAuth)
+  router.use(auth)
 
 
 module.exports = router;

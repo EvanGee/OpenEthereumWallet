@@ -12,5 +12,10 @@ module.exports = {
 
     //default setting for JSON contracts path
     contractsPath: contractsPath,
-    port: 3030
+
+    //port that the app will listen on
+    port: 3030,
+
+    //will ask for confirmation on every api call
+    userAuth: false,
 }
