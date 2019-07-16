@@ -18,15 +18,15 @@ url "http://127.0.0.1:port or whatever it is listening to. All the parameters ar
 
 url = http//127.0.0.1:port/accounts  
 ### GET __**/getAccounts**__  
-Paramaters: [NoParams]  
+Paramaters: None  
 returns: a list of all encrypted keys, this is useful for exporting them, do so with the greatest of care.  
 
 ### GET __**/getPublicAddresses**__   
-Paramaters:[NoParams]   
+Paramaters: None  
 returns: a list of all public address  
 
 ### GET __**/defaultAddress**__  
-Paramaters: [NoParams]  
+Paramaters: None  
 returns: {action:"getDefault", payload: defaultAddress}  
 
 ### POST __**/getBalances**__   
@@ -42,7 +42,9 @@ returns: a list with the balances of all chosen accounts
 Paramaters: 
 ```
 {
-newAccount : {password: somevalue}
+newAccount : {
+    password: somevalue
+    }
 }
 ```
 returns: {action:"newAccount", payload: publicAddress}  
@@ -64,9 +66,9 @@ Paramaters:
 ```
 {
 changeDefault: {
- account:"0x12345...", 
- password: "somepassword"
- }
+    account:"0x12345...", 
+    password: "somepassword"
+    }
 }
 ```
 returns: {action:"changeDefault", payload: newDefaultAddress} 
@@ -77,7 +79,7 @@ url = http://127.0.0.1:port/blockchain
 Paramaters: 
 ```
 {
-id: "123..."
+    id: "123..."
 }
 ```
 returns: the contract address of the id you deployed it with  
@@ -86,10 +88,10 @@ returns: the contract address of the id you deployed it with
 Paramaters:  
 ```  
 {  
-contract: "ContractName",  
-gas: '50000'  
-id: '123' // this is can be used to get the address later, remember what ID you set it as   
-args: [] //optional, these are your arguments to the constructor    
+    contract: "ContractName",  
+    gas: '50000'  
+    id: '123' // this is can be used to get the address later, remember what ID you set it as   
+    args: [] //optional, these are your arguments to the constructor    
 }
  ```    
 returns: the address of the deployed contract  
@@ -113,11 +115,11 @@ returns the transaction object
 Parameters: 
 ```
 {  
-        contract: "ContractName"  
-        id: "123" //optional or can use address instead, need etiher id or address  
-        address: "0x1234...."",  
-        fromBlock: 0,  
-        toBlock: "latest",  
+    contract: "ContractName"  
+    id: "123" //optional or can use address instead, need etiher id or address  
+    address: "0x1234...."",  
+    fromBlock: 0,  
+    toBlock: "latest",  
 }
 ```  
 returns {events}  
@@ -127,12 +129,39 @@ returns {events}
 Parameters: 
 ```  
 {  
-        funcName: "functionName",  
-        args: [], //these are your arguements to your function  
-        gas: "50000",  
-        contract: "ContractName"  
-        id: "123" //optional or can use address instead, need etiher id or address  
-        address: "0x1234...."",  
+    funcName: "functionName",  
+    args: [], //these are your arguements to your function  
+    gas: "50000",  
+    contract: "ContractName"  
+    id: "123" //optional or can use address instead, need etiher id or address  
+    address: "0x1234...."",  
 }
 ```  
 returns amount in wei  
+
+## Protected
+url = http://127.0.0.1:port/protected
+
+
+### POST /changeProvider
+Paramaters: 
+```
+{
+    newProvider: "http://newProvider:8454"
+}
+```
+returns {provider: newProvider}
+
+### GET /getCurrentProvider
+Paramaters: None
+returns {provider: currentProvider}
+
+### POST /send
+Parameters: 
+```
+    to: "0x123...",
+    from: "0x123...",
+    value: 1234..., //in wei
+    gas: 21000
+```
+returns: transaction object
