@@ -64,36 +64,35 @@ router.get("/newAccount", (req, res) => {
 
 })
 
-//{deleteAccount:{account:"0x12345..."}});
+//{account:"0x12345..."};
 router.post("/deleteAccount", (req, res) => {
     let msg = req.body
-        if (msg.hasOwnProperty("deleteAccount")) {
         
-            if (!msg.deleteAccount.hasOwnProperty("account")) {
-                res.send({action: "error", payload: {deleteAccount:{account:"0x12345..."}}});
-                return false;
-            }
-
-            req.bc.accounts.deleteAccount(msg.deleteAccount.account)
-            .then((data) => {
-                res.send({action:"deleteAccount", payload: data});
-            })
-            .catch((err)=>{
-                res.send({action: "error", payload: err});
-            })
+        if (!msg.hasOwnProperty("address")) {
+            res.send({action: "error", payload: {address:"0x12345..."}});
+            return false;
         }
+
+        req.bc.accounts.deleteAccount(msg.account)
+        .then((data) => {
+            res.send({action:"deleteAccount", payload: data});
+        })
+        .catch((err)=>{
+            res.send({action: "error", payload: err});
+        })
+        
 })
 
-//{changeDefault:{account:"0x12345..."}}});
+//{account:"0x12345..."};
 router.post("/changeDefault", (req, res) => {
     let msg = req.body
-    if (msg.hasOwnProperty("changeDefault")) {
-        if (!msg.changeDefault.hasOwnProperty("account")) {
-            res.send({action: "error", payoad: "action no account field: {changeDefault:{account:0x123...}"});
+
+        if (!msg.hasOwnProperty("address")) {
+            res.send({action: "error", payoad: "action no account field: {address:0x123...}"});
             return
         }
-
-        req.bc.accounts.loadWallet(msg.changeDefault.account)
+        
+        req.bc.accounts.loadWallet(msg.address)
         .then((account) => {
             req.bc.accounts.setDefaultAccount(account)
             res.send({action:"changeDefault", payload: req.web3.eth.defaultAccount});
@@ -101,7 +100,7 @@ router.post("/changeDefault", (req, res) => {
         .catch(() => {
             res.send({action: "error", payload: "failed changing default account"});
         })
-    }
+
 })
 
 router.get("/defaultAddress", (req, res) => {
@@ -110,8 +109,6 @@ router.get("/defaultAddress", (req, res) => {
 
 //No function accounts.send
 router.post("/send", (req, res)=> {
-    console.log("sending", req.body)
-
     req.bc.accounts.send(req.body)
         .then((data)=>{
             res.send(data)

@@ -34,25 +34,25 @@ const getPassword = (bc) => {
 }
 
 
-if (typeof web3 === 'undefined') { 
-  web3 = new Web3(conf.web3HttpHost);
-  console.log("set host: ", web3.currentProvider.host)
-  bc = require("../../BlockChain")(web3);
-  if (typeof conf.password != undefined) {
-    setDefault(bc, conf.password)
+
+const initWeb3 = () => {
+  if (typeof web3 === 'undefined') { 
+    web3 = new Web3(conf.web3HttpHost);
+    console.log("set host: ", web3.currentProvider.host)
+    bc = require("../../BlockChain")(web3);
+    if (typeof conf.password != undefined)
+      setDefault(bc, conf.password)
+    else
+      getPassword(bc) 
   }
-  else
-    getPassword(bc) 
 }
 
-const web3Inject = (req, res, next) => {
-    if (typeof web3 === 'undefined') {
-      web3 = new Web3(conf.web3HttpHost);
-      req.web3 = web3;
-    }
-    req.web3 = web3
-    req.bc = require("../../BlockChain")(web3);
 
+const web3Inject = (req, res, next) => {
+
+    req.web3 = web3
+    req.bc = bc
+    
     if (req.web3.eth.defaultAccount == null)
       setDefault(req.bc)
 
@@ -80,5 +80,6 @@ router.use(setHeaders)
 if (conf.userAuth)
   router.use(auth)
 
+initWeb3()
 
 module.exports = router;

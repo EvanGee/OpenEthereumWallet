@@ -28,8 +28,6 @@ let testAccount = {
 }
 
 
-
-
 /*
 
 test("get public accounts", () => {
