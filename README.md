@@ -35,35 +35,25 @@ returns: a list of all public address
 ### GET __**/defaultAddress**__  
 Paramaters: None  
 returns: {action:"getDefault", payload: defaultAddress}  
-
+  
+### GET __**/newAccount**__  
+Paramaters: None  
+returns: {action:"newAccount", payload: publicAddress}  
+  
 ### POST __**/getBalances**__   
 Paramaters: 
 ```
 {
-'addresses':'[...0x1234, ...0x1234]'
+    'addresses':'[...0x1234, ...0x1234]'
 }
 ```
 returns: a list with the balances of all chosen accounts  
-
-### POST __**/newAccount**__  
-Paramaters: 
-```
-{
-newAccount : {
-    password: somevalue
-    }
-}
-```
-returns: {action:"newAccount", payload: publicAddress}  
 
 ### POST __**/deleteAccount**__  
 Paramaters: 
 ```
 {
-deleteAccount: {
-    account:"0x12345...", 
-    password: "somepassword"
-    }
+    account:"0x12345..."
 }
 ```
 returns: {action:"deleteAccount", payload: addressDeleted}  
@@ -72,13 +62,22 @@ returns: {action:"deleteAccount", payload: addressDeleted}
 Paramaters: 
 ```
 {
-changeDefault: {
-    account:"0x12345...", 
-    password: "somepassword"
-    }
+    address:"0x12345..."
 }
 ```
+
 returns: {action:"changeDefault", payload: newDefaultAddress} 
+  
+### POST /send  
+Parameters: 
+```
+    to: "0x123...",
+    from: "0x123...",
+    value: 1234..., //in wei
+    gas: 21000
+```
+returns: transaction object  
+
 ## BlockChain  
 url = http://127.0.0.1:port/blockchain
 
@@ -116,7 +115,7 @@ Parameters:
     value: 12333 //if function call is payable 
 }
 ```
-returns the transaction object
+returns the transaction object  
 ### POST /getEvents  
 (this one is yet to be tested and implmented fully)  
 Parameters: 
@@ -146,9 +145,8 @@ Parameters:
 ```  
 returns amount in wei  
 
-## Protected
-url = http://127.0.0.1:port/protected
-
+## Net
+url = http://127.0.0.1:port/net
 
 ### POST /changeProvider
 Paramaters: 
@@ -160,15 +158,7 @@ Paramaters:
 returns {provider: newProvider}
 
 ### GET /getCurrentProvider
-Paramaters: None
-returns {provider: currentProvider}
+Paramaters: None  
+returns {provider: currentProvider}  
 
-### POST /send
-Parameters: 
-```
-    to: "0x123...",
-    from: "0x123...",
-    value: 1234..., //in wei
-    gas: 21000
-```
-returns: transaction object
+
