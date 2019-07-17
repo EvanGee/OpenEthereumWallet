@@ -1,13 +1,6 @@
 const express = require("express")
 const router = express.Router()
 
-const path = require("path")
-
-router.get("/", (req, res) => {
-    console.log("request" + req.body)
-})
-
-
 router.post("/getContractAddress", (req, res)=>{
     if (!req.body.hasOwnProperty("id")) {
         res.send("error:id field undefined, send a request with id eg, {id: 'unique identifier'}")

@@ -18,4 +18,7 @@ module.exports = {
 
     //will ask for confirmation on every api call
     userAuth: false,
+
+    //can set password here if you don't want the user to auth (for dev stuff)
+    password: "pass1234"
 }

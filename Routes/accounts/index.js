@@ -1,13 +1,5 @@
 const express = require("express")
 const router = express.Router()
-const path = require("path")
-
-router.get("/", (req, res) => {
-    res.send(JSON.stringify({
-        "sup": "yo"
-    }))
-})
-
 
 router.get("/getAccounts", (req, res) => {
     req.bc.accounts.getAccounts()
@@ -58,44 +50,31 @@ router.post("/getBalances", (req, res) => {
 
 })
 
-// {newAccount: {password: somevalue}}
-router.post("/newAccount", (req, res) => {
+router.get("/newAccount", (req, res) => {
     
     let msg = req.body
-    if (msg.hasOwnProperty("newAccount")) {
-    
-        if (!msg.newAccount.hasOwnProperty("password")) {
-            res.send({action: "error", payload: "send with fromat: action: {newAccount:{password:example1234}}"});
-            return false;
-        }
+    req.bc.accounts.createAccount()
+    .then((encryptedKey) => {
+        res.send({action:"newAccount", payload: encryptedKey.address});
+        return true
+    })
+    .catch((err)=>{
+        res.send({action: "error", payload: err});
+    })
 
-        req.bc.accounts.createAccount(msg.newAccount.password)
-        .then((encryptedKey) => {
-            res.send({action:"newAccount", payload: encryptedKey.address});
-            return true
-        })
-        .catch((err)=>{
-            res.send({action: "error", payload: err});
-        })
-    }
 })
 
-//{deleteAccount:{account:"0x12345...", password: "somepassword"}}});
+//{deleteAccount:{account:"0x12345..."}});
 router.post("/deleteAccount", (req, res) => {
     let msg = req.body
         if (msg.hasOwnProperty("deleteAccount")) {
         
             if (!msg.deleteAccount.hasOwnProperty("account")) {
-                res.send({action: "error", payload: {deleteAccount:{account:"0x12345...", password: "somepassword"}}});
+                res.send({action: "error", payload: {deleteAccount:{account:"0x12345..."}}});
                 return false;
             }
-    
-            if (!msg.deleteAccount.hasOwnProperty("password")) {
-                res.send({action: "error", payload: {deleteAccount:{account:"0x12345...", password:"somepassword"}}});
-                return false;
-            }
-    
-            req.bc.accounts.deleteAccount(msg.deleteAccount.account, msg.deleteAccount.password)
+
+            req.bc.accounts.deleteAccount(msg.deleteAccount.account)
             .then((data) => {
                 res.send({action:"deleteAccount", payload: data});
             })
@@ -105,20 +84,16 @@ router.post("/deleteAccount", (req, res) => {
         }
 })
 
+//{changeDefault:{account:"0x12345..."}}});
 router.post("/changeDefault", (req, res) => {
     let msg = req.body
     if (msg.hasOwnProperty("changeDefault")) {
         if (!msg.changeDefault.hasOwnProperty("account")) {
-            res.send({action: "error", payoad: "action no account field: {changeDefault:{account:0x123..., password:1234}}"});
-            return
-        }
-            
-        if (!msg.changeDefault.hasOwnProperty("password")) {
-            res.send({action: "error", payload: "give me a password you nub {changeDefault:{account:0x123..., password:1234}}"});
+            res.send({action: "error", payoad: "action no account field: {changeDefault:{account:0x123...}"});
             return
         }
 
-        req.bc.accounts.loadWallet(msg.changeDefault.account, msg.changeDefault.password)
+        req.bc.accounts.loadWallet(msg.changeDefault.account)
         .then((account) => {
             req.bc.accounts.setDefaultAccount(account)
             res.send({action:"changeDefault", payload: req.web3.eth.defaultAccount});
@@ -133,4 +108,18 @@ router.get("/defaultAddress", (req, res) => {
     res.send({action:"getDefault", payload: req.web3.eth.defaultAccount})
 })
 
-module.exports = router;
+//No function accounts.send
+router.post("/send", (req, res)=> {
+    console.log("sending", req.body)
+
+    req.bc.accounts.send(req.body)
+        .then((data)=>{
+            res.send(data)
+        })
+        .catch(()=>{
+            res.send("error: in sending")
+        })
+    })
+
+
+module.exports = router

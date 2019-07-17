@@ -5,6 +5,7 @@ const Web3 = require("web3")
 
 //const pass = "pass1234"
 const setDefault = async (bc, pass) => {
+  bc.accounts.addPass(pass)
   bc.accounts.getPublicAddresses()
   .then((addresses)=>{
       if (addresses.length === 0)
@@ -28,17 +29,20 @@ const getPassword = (bc) => {
     setDefault(bc, pass)
   })
   .catch((err) => {
-    console.log(err)
     getPassword(bc)
   })  
 }
 
 
-if (typeof web3 === 'undefined') {
+if (typeof web3 === 'undefined') { 
   web3 = new Web3(conf.web3HttpHost);
   console.log("set host: ", web3.currentProvider.host)
   bc = require("../../BlockChain")(web3);
-  getPassword(bc) 
+  if (typeof conf.password != undefined) {
+    setDefault(bc, conf.password)
+  }
+  else
+    getPassword(bc) 
 }
 
 const web3Inject = (req, res, next) => {

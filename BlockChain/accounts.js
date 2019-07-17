@@ -6,6 +6,7 @@ module.exports = class Accounts {
     constructor(web3) {
         this.web3 = web3
         this.path = __dirname + "/Accounts/"
+        this.pass = ""
     }
 
     decryptAccount(account, password) {
@@ -52,7 +53,7 @@ module.exports = class Accounts {
     }
 
 
-    async getPublicAddresses() {
+    getPublicAddresses() {
         return new Promise((resolve, reject) => {
             this.getAccounts()
                 .then((encryptedAccounts) => {
@@ -70,7 +71,8 @@ module.exports = class Accounts {
 
     }
 
-    createAccount(password) {
+    createAccount(pass) {
+        const password = typeof pass != undefined? pass: this.pass
         return new Promise((resolve, reject) => {
             let account = this.web3.eth.accounts.create()
             let encryptedAccount = account.encrypt(password);
@@ -85,7 +87,8 @@ module.exports = class Accounts {
         })
     }
 
-    deleteAccount(address, password) {
+    deleteAccount(address, pass) {
+        const password = typeof pass != undefined? pass: this.pass
         return new Promise((resolve, reject) => {
             this.decryptAccount(address, password)
                 .then((response) => {
@@ -111,7 +114,8 @@ module.exports = class Accounts {
         })
     }
 
-    loadWallet(account, password) {
+    loadWallet(account, pass) {
+        const password = typeof pass != undefined? pass: this.pass
         return new Promise((resolve, reject) => {
 
             this.decryptAccount(account, password)
@@ -170,8 +174,12 @@ module.exports = class Accounts {
         return this.web3.eth.sendTransaction(transactionObject)
     }
 
-
     getBalance(account) {
         return this.web3.eth.getBalance(account)
     }
+
+    addPass(pass) {
+        this.pass = pass;
+    }
+
 }

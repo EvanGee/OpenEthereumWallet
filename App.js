@@ -8,8 +8,11 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-const router = require("./Routes");
 
+
+
+
+const router = require("./Routes");
 app.use(router);
 
 const port = conf.port
