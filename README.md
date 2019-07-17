@@ -23,7 +23,7 @@ in a front end application
 
 
 ## Accounts:  
-url = http//127.0.0.1:port/accounts  
+url = http://127.0.0.1:port/accounts  
 ### GET __**/getAccounts**__  
 Paramaters: None  
 returns: a list of all encrypted keys, this is useful for exporting them, do so with the greatest of care.  
