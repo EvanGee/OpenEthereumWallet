@@ -52,9 +52,11 @@ module.exports = class pass {
 
             this.getPassword().then((hash)=>{
                 bcrypt.compare(plaintextPassword, hash).then(function(res) {
+                    if (res == false)
+                        reject(res)
                     resolve(res)
                 })
-                .catch(reject)
+                .catch(()=>reject("password failed"))
             })
         })
     }
@@ -80,6 +82,24 @@ module.exports = class pass {
                 resolve()
             }
             reject()
+        })
+    }
+
+    getPasswordFromUser() {
+        return new Promise((resolve, reject)=>{
+            this.getPassword()
+            .then((passwordHash)=>{
+                const answer = question("Please enter your password: ")
+                this.comparePassword(answer)
+                .then(()=>resolve(answer))
+                .catch(()=>reject("Password failed"))
+            })
+            .catch((err)=>{
+                const answer = question("You don't have a password set up, (this password will be used to encrypt your keuys) enter one: ")
+                this.storePassword(answer)
+                .then(resolve)
+                .catch(reject)
+            })
         })
     }
 }

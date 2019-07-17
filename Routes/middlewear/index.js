@@ -3,15 +3,13 @@ const router = express.Router()
 const conf = require("../../conf.js")
 const Web3 = require("web3")
 
-
-
-const setDefault = (bc) => {
-
+//const pass = "pass1234"
+const setDefault = async (bc, pass) => {
   bc.accounts.getPublicAddresses()
   .then((addresses)=>{
       if (addresses.length === 0)
         return;
-      bc.accounts.loadWallet(addresses[addresses.length-1], "pass1234")
+      bc.accounts.loadWallet(addresses[addresses.length-1], pass)
       .then((account)=>{
         bc.accounts.setDefaultAccount(account)
         .then((res)=>{
@@ -21,15 +19,26 @@ const setDefault = (bc) => {
           console.log("error", err)
         })
       })
-      
   })
 }
+
+const getPassword = (bc) => {
+  bc.auth.getPasswordFromUser(bc)
+  .then((pass)=>{
+    setDefault(bc, pass)
+  })
+  .catch((err) => {
+    console.log(err)
+    getPassword(bc)
+  })  
+}
+
 
 if (typeof web3 === 'undefined') {
   web3 = new Web3(conf.web3HttpHost);
   console.log("set host: ", web3.currentProvider.host)
   bc = require("../../BlockChain")(web3);
-  setDefault(bc)
+  getPassword(bc) 
 }
 
 const web3Inject = (req, res, next) => {
