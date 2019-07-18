@@ -160,6 +160,6 @@ returns {actions: 'changeProvider', payload: currentProvider})
 
 ### GET /getCurrentProvider
 Paramaters: None  
-returns {actions: 'changeProvider', payload: currentProvider})
+returns {actions: 'getCurrentProvider', payload: currentProvider})
 
 
