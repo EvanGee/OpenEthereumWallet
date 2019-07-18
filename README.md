@@ -37,7 +37,7 @@ returns: {action:"getDefault", payload: defaultAddress}
   
 ### GET __**/newAccount**__  
 Paramaters: None  
-returns: {action:"newAccount", payload: publicAddress}  
+returns: {action:"newAccount", payload: address}  
   
 ### POST __**/getBalances**__   
 Paramaters: 
