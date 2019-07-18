@@ -6,8 +6,7 @@ router.post("/getContractAddress", (req, res)=>{
         res.send({action: "error", payload: "id field undefined, send a request with id eg, {id: 'unique identifier'}"})
         return;
     }
-
-    res.send(req.bc.contracts.getAddress(req.body.id))
+    res.send({action:"getContractAddress", payload:req.bc.contracts.getAddress(req.body.id)})
 })
 
 /*
@@ -37,8 +36,7 @@ router.post("/deploy", (req, res) => {
     req.bc.contracts.deploy(req.web3.eth.defaultAccount, req.body.contract, req.body.args, req.body.gas)
         .then((contract) => {;
             req.bc.contracts.saveAddress(req.body.id, contract._address)
-            res.send(contract._address)
-            console.log(contract)
+            res.send({action: "deploy", payload: contract._address})
  
         })
         .catch((err) => {
@@ -82,7 +80,7 @@ router.post("/call", (req, res) => {
 
     req.bc.contracts.funcCall(req.body)
     .then((data)=>{
-        res.send(data)
+        res.send({action: "call", payload: data})
     })
     .catch((err)=>{
         res.send({action: "error", payload: err})

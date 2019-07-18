@@ -111,7 +111,7 @@ router.get("/defaultAddress", (req, res) => {
 router.post("/send", (req, res)=> {
     req.bc.accounts.send(req.body)
         .then((data)=>{
-            res.send(data)
+            res.send({action: "send", payload: data})
         })
         .catch((err)=>{
             res.send({action: "error", payload: err})
