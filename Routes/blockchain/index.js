@@ -72,8 +72,8 @@ router.post("/call", (req, res) => {
         res.send({action: "error", payload: "gas field undefined, send a request with (the max gas you wish to spend) eg, {gas: '1000000'}"})
         return;
     }
-    if (!req.body.hasOwnProperty("id")) {
-        res.send({action: "error", payload: "id field undefined, send a request with (the max gas you wish to spend) eg, {id: 'unique identifier'}"})
+    if (!req.body.hasOwnProperty("id") && !req.body.hasOwnProperty("address")) {
+        res.send({action: "error", payload: "id and address field undefined, you need at least one field with either address of id when calling functions"})
         return;
     }
 
