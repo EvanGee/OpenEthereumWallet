@@ -17,20 +17,19 @@ $node App.js
 
 # API
 Parameters are the application-type/json body of your request
-it will return json for most of the responses 
-In the future I want to make everything returns {action, payload} format, so it is easy to structure
-in a front end application
+every api responses includes a json string "{action:endpoint, payload:response} format, so it is easy to structure
+in a front end application, like if you were using React/redux for instance
 
 
 ## Accounts:  
 url = http://127.0.0.1:port/accounts  
 ### GET __**/getAccounts**__  
 Paramaters: None  
-returns: a list of all encrypted keys, this is useful for exporting them, do so with the greatest of care.  
+returns: {action:"getAccounts", payload: [accounts]}
 
 ### GET __**/getPublicAddresses**__   
 Paramaters: None  
-returns: a list of all public address  
+returns: {action: "getPublicAddresses", payload: [addresses]}
 
 ### GET __**/defaultAddress**__  
 Paramaters: None  
@@ -47,7 +46,7 @@ Paramaters:
     'addresses':'[...0x1234, ...0x1234]'
 }
 ```
-returns: a list with the balances of all chosen accounts  
+returns: {action:"getBalances", payload: [{publicAddress:balanace:]} 
 
 ### POST __**/deleteAccount**__  
 Paramaters: 
@@ -76,7 +75,7 @@ Parameters:
     value: 1234..., //in wei
     gas: 21000
 ```
-returns: transaction object  
+returns: {action: "send", payload: transaction}
 
 ## BlockChain  
 url = http://127.0.0.1:port/blockchain
@@ -88,7 +87,7 @@ Paramaters:
     id: "123..."
 }
 ```
-returns: the contract address of the id you deployed it with  
+returns: {action:"getContractAddress", payload:address}
 
 ### POST /deploy  
 Paramaters:  
@@ -100,7 +99,7 @@ Paramaters:
     args: [] //optional, these are your arguments to the constructor    
 }
  ```    
-returns: the address of the deployed contract  
+returns: {action:"deploy", payload:addressOfDeployedContract}
 
 ### POST /call  
 Parameters: 
@@ -115,7 +114,8 @@ Parameters:
     value: 12333 //if function call is payable 
 }
 ```
-returns the transaction object  
+returns: {action: "call", payload: transaction}  
+
 ### POST /getEvents  
 (this one is yet to be tested and implmented fully)  
 Parameters: 
@@ -128,7 +128,7 @@ Parameters:
     toBlock: "latest",  
 }
 ```  
-returns {events}  
+returns: {action: getEvents, payload: [events]}  
   
 ### POST /estimate  
 (this one is yet to be tested and implmented fully)  
@@ -143,7 +143,7 @@ Parameters:
     address: "0x1234...."",  
 }
 ```  
-returns amount in wei  
+returns: {action: getEvents, payload: [events]}  
 
 ## Net
 url = http://127.0.0.1:port/net
@@ -154,11 +154,11 @@ Paramaters:
 {
     newProvider: "http://newProvider:8454"
 }
-```
-returns {provider: newProvider}
+```  
+returns {actions: 'changeProvider', payload: currentProvider})
 
 ### GET /getCurrentProvider
 Paramaters: None  
-returns {provider: currentProvider}  
+returns {actions: 'changeProvider', payload: currentProvider})
 
 
