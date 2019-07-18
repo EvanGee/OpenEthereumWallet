@@ -3,7 +3,7 @@ const router = express.Router()
 
 router.post("/getContractAddress", (req, res)=>{
     if (!req.body.hasOwnProperty("id")) {
-        res.send("error:id field undefined, send a request with id eg, {id: 'unique identifier'}")
+        res.send({action: "error", payload: "id field undefined, send a request with id eg, {id: 'unique identifier'}"})
         return;
     }
 
@@ -20,17 +20,17 @@ router.post("/getContractAddress", (req, res)=>{
 */
 router.post("/deploy", (req, res) => {
     if (!req.body.hasOwnProperty("contract")) {
-        res.send("error: contract field undefined, send a request with eg, {contract: 'contractName'}")
+        res.send({action: "error", payload: "contract field undefined, send a request with eg, {contract: 'contractName'}"})
         return;
     }
 
     if (!req.body.hasOwnProperty("gas")) {
-        res.send("error:gas field undefined, send a request with (the max gas you wish to spend) eg, {gas: '1000000'}")
+        res.send({action: "error", payload: "gas field undefined, send a request with (the max gas you wish to spend) eg, {gas: '1000000'}"})
         return;
     }
 
     if (!req.body.hasOwnProperty("id")) {
-        res.send("error:id field undefined, send a request with (the max gas you wish to spend) eg, {id: 'unique identifier'}")
+        res.send({action: "error", payload: "id field undefined, send a request with (the max gas you wish to spend) eg, {id: 'unique identifier'}"})
         return;
     }
 
@@ -42,7 +42,7 @@ router.post("/deploy", (req, res) => {
  
         })
         .catch((err) => {
-            res.send("contract failed to deploy" + err)
+            res.send({action: "error", payload: err})
             console.log(err)
         })
 })
@@ -59,54 +59,55 @@ router.post("/deploy", (req, res) => {
     */
 router.post("/call", (req, res) => {
     if (!req.body.hasOwnProperty("funcName")){
-        res.send("error: function field undefined, send a request with eg, {contract: name, function: 'foo', args: '[bar, stuff], gas: 21000, value: 10000'}")
+        res.send({action: "error", payload: "function field undefined, send a request with eg, {contract: name, function: 'foo', args: '[bar, stuff], gas: 21000, value: 10000'}"})
         return;
     }
     if (!req.body.hasOwnProperty("args")){
-        res.send("error: args field undefined, send a request with eg, {contract: name, function: 'foo', args: '[bar, stuff], gas: 21000, value: 10000'}")
+        res.send({action: "error", payload: "args field undefined, send a request with eg, {contract: name, function: 'foo', args: '[bar, stuff], gas: 21000, value: 10000'}"})
         return;
     }
-    if (!req.body.hasOwnProperty("gas")){
-        res.send("error: gas field undefined, send a request with eg, {contract: name, function: 'foo', args: '[bar, stuff], gas: 21000, value: 10000'}")
+    if (!req.body.hasOwnProperty("contract")) {
+        res.send({action: "error", payload: "contract field undefined, send a request with eg, {contract: 'contractName'}"})
         return;
     }
-    if (!req.body.hasOwnProperty("contract")){
-        res.send("error: contract field undefined, send a request with eg, {contract: name, function: 'foo', args: '[bar, stuff], gas: 21000, value: 10000'}")
+    if (!req.body.hasOwnProperty("gas")) {
+        res.send({action: "error", payload: "gas field undefined, send a request with (the max gas you wish to spend) eg, {gas: '1000000'}"})
         return;
     }
-    if (!req.body.hasOwnProperty("id") && !req.body.hasOwnProperty("address")){
-        res.send("error: id and address field undefined, you need at least one field with either address of id")
+    if (!req.body.hasOwnProperty("id")) {
+        res.send({action: "error", payload: "id field undefined, send a request with (the max gas you wish to spend) eg, {id: 'unique identifier'}"})
         return;
     }
+
 
     req.bc.contracts.funcCall(req.body)
     .then((data)=>{
         res.send(data)
     })
     .catch((err)=>{
-        res.send(req.body.funcName + ' function not called error: '+ err)
+        res.send({action: "error", payload: err})
     })
 })
 
 router.post("/getEvents", (req, res) => {
-    if (!req.body.hasOwnProperty("contract")){
-        res.send("error: contract field undefined, send a request with eg, {contract: name}")
+    if (!req.body.hasOwnProperty("contract")) {
+        res.send({action: "error", payload: "contract field undefined, send a request with eg, {contract: 'contractName'}"})
         return;
     }
-    if (!req.body.hasOwnProperty("id") && !req.body.hasOwnProperty("address")){
-        res.send("error: id and address field undefined, you need at least one field with either address of id")
+    if (!req.body.hasOwnProperty("id")) {
+        res.send({action: "error", payload: "id field undefined, send a request with (the max gas you wish to spend) eg, {id: 'unique identifier'}"})
         return;
     }
     if (!req.body.hasOwnProperty("eventName")){
-        res.send("error: eventName field undefined, send a request with eg, {eventName: name}")
+        res.send({action: "error", payload: "eventName field undefined, send a request with eg, {eventName: name}"})
         return;
     }
     if (!req.body.hasOwnProperty("fromBlock")){
-        res.send("error: fromBlock field undefined, send a request with eg, {fromBlock: 0}")
+        res.send({action: "error", payload: "error: fromBlock field undefined, send a request with eg, {fromBlock: 0}"})
         return;
     }
     if (!req.body.hasOwnProperty("toBlock")){
-        res.send("error: toBlock field undefined, send a request with eg, {toBlock: latest}")
+        res.send({action: "error", payload: "toBlock field undefined, send a request with eg, {toBlock: latest}"})
         return;
     }
     

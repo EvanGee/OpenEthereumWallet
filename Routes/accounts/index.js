@@ -4,20 +4,20 @@ const router = express.Router()
 router.get("/getAccounts", (req, res) => {
     req.bc.accounts.getAccounts()
         .then((accounts) => {
-            res.send(accounts)
+            res.send({action:"getAccounts", payload: accounts})
         })
-        .catch((err) => {
-            res.send("couldn't get accounts" + err)
+        .catch((err) => {0
+            res.send({action: "error", payload: err})
         })
 })
 
 router.get("/getPublicAddresses", (req, res) => {
     req.bc.accounts.getPublicAddresses()
         .then((addresses) => {
-            res.send(addresses);
+            res.send({action: "getPublicAddresses", payload: addresses});
         })
         .catch((err) => {
-            res.send("couldn't get addresses" + err)
+            res.send({action: "error", payload: err})
         })
 })
 
@@ -26,7 +26,7 @@ router.get("/getPublicAddresses", (req, res) => {
 router.post("/getBalances", (req, res) => {
 
     if (Array.isArray(req.body.addresses) === false) {
-        res.send("the request was poorly formatted, need this: {addresses:[0x1234...]")
+        res.send({action: "error", payload: "inpropper request format use {address:0x123...}")
         return;
     }
     
@@ -45,7 +45,7 @@ router.post("/getBalances", (req, res) => {
             res.send(final)
         })
         .catch((err)=>{
-            res.send("couldn't get balances" + err)
+            res.send({action: "error", payload: err})
         })
 
 })
@@ -64,12 +64,12 @@ router.get("/newAccount", (req, res) => {
 
 })
 
-//{account:"0x12345..."};
+//{address:"0x12345..."};
 router.post("/deleteAccount", (req, res) => {
     let msg = req.body
         
         if (!msg.hasOwnProperty("address")) {
-            res.send({action: "error", payload: {address:"0x12345..."}});
+            res.send({action: "error", payload: "inpropper request format use {address:0x123...}"});
             return false;
         }
 
@@ -88,7 +88,7 @@ router.post("/changeDefault", (req, res) => {
     let msg = req.body
 
         if (!msg.hasOwnProperty("address")) {
-            res.send({action: "error", payoad: "action no account field: {address:0x123...}"});
+            res.send({action: "error", payload: "inpropper request format use {address:0x123...}");
             return
         }
         
@@ -97,8 +97,8 @@ router.post("/changeDefault", (req, res) => {
             req.bc.accounts.setDefaultAccount(account)
             res.send({action:"changeDefault", payload: req.web3.eth.defaultAccount});
         })
-        .catch(() => {
-            res.send({action: "error", payload: "failed changing default account"});
+        .catch((err) => {
+            res.send({action: "error", payload: err});
         })
 
 })
@@ -113,8 +113,8 @@ router.post("/send", (req, res)=> {
         .then((data)=>{
             res.send(data)
         })
-        .catch(()=>{
-            res.send("error: in sending")
+        .catch((err)=>{
+            res.send({action: "error", payload: err})
         })
     })
 
