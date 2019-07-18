@@ -73,7 +73,7 @@ router.post("/deleteAccount", (req, res) => {
             return false;
         }
 
-        req.bc.accounts.deleteAccount(msg.account)
+        req.bc.accounts.deleteAccount(msg.address)
         .then((data) => {
             res.send({action:"deleteAccount", payload: data});
         })
