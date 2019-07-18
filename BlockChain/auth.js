@@ -91,7 +91,10 @@ module.exports = class pass {
             .then((passwordHash)=>{
                 const answer = question("Please enter your password: ")
                 this.comparePassword(answer)
-                .then(()=>resolve(answer))
+                .then(()=>{
+                    console.log("Password accepted")
+                    resolve(answer) })
+
                 .catch(()=>reject("Password failed"))
             })
             .catch((err)=>{
