@@ -16,8 +16,8 @@ $node App.js
 ```
 
 # API
-Parameters are the application-type/json body of your request
-every api responses includes a json string "{action:endpoint, payload:response} format, so it is easy to structure
+Parameters are the application-type/json body of your request.
+every api response includes a json string "{action:endpoint, payload:response}" format, so it is easy to structure
 in a front end application, like if you were using React/redux for instance. If something goes wrong, it will
 response with an {action:"error", paload: err}.
 
@@ -162,4 +162,10 @@ returns {actions: 'changeProvider', payload: currentProvider})
 Paramaters: None  
 returns {actions: 'getCurrentProvider', payload: currentProvider})
 
+
+
+If you feeling like helpig pay off my student loans, feel free to give to 
+0x1236354b2478AB8B4e681209BBb7ea14D3843C11
+This would be a really big help actually. Thank you for reaching the bottom of the readme!!
+best of luck!
 
