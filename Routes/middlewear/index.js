@@ -40,7 +40,8 @@ const initWeb3 = () => {
     web3 = new Web3(conf.web3HttpHost);
     console.log("set host: ", web3.currentProvider.host)
     bc = require("../../BlockChain")(web3);
-    if (typeof conf.password != undefined)
+
+    if (conf.password != undefined)
       setDefault(bc, conf.password)
     else
       getPassword(bc) 

@@ -7,6 +7,14 @@ module.exports = class Accounts {
         this.web3 = web3
         this.path = __dirname + "/Accounts/"
         this.pass = "pass"
+        this.decryptAccount = this.decryptAccount.bind(this)
+        this.getAccounts = this.getAccounts.bind(this)
+        this.getPublicAddresses = this.getPublicAddresses.bind(this)
+        this.createAccount = this.createAccount.bind(this)
+        this.deleteAccount = this.deleteAccount.bind(this)
+        this.setDefaultAccount = this.setDefaultAccount.bind(this)
+        this.addPass = this.addPass.bind(this)
+        this.loadWallet = this.loadWallet.bind(this)
     }
 
     decryptAccount(account, password) {
@@ -117,7 +125,6 @@ module.exports = class Accounts {
     loadWallet(account) {
         const password = this.pass
         return new Promise((resolve, reject) => {
-
             this.decryptAccount(account, password)
                 .then((accountObject) => {
                     

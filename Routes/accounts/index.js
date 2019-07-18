@@ -26,7 +26,7 @@ router.get("/getPublicAddresses", (req, res) => {
 router.post("/getBalances", (req, res) => {
 
     if (Array.isArray(req.body.addresses) === false) {
-        res.send({action: "error", payload: "inpropper request format use {address:0x123...}"})
+        res.send({action: "error", payload: "inpropper request format use {addresses:0x123...}"})
         return;
     }
     

@@ -20,5 +20,5 @@ module.exports = {
     userAuth: false,
 
     //can set password here if you don't want the user to auth (for dev stuff)
-    password: "pass1234"
+    //password: "pass1234"
 }

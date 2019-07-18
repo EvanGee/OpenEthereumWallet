@@ -95,9 +95,12 @@ module.exports = class pass {
                 .catch(()=>reject("Password failed"))
             })
             .catch((err)=>{
-                const answer = question("You don't have a password set up, (this password will be used to encrypt your keuys) enter one: ")
+                const answer = question("You don't have a password set up, (this password will be used to encrypt your keys) enter one: ")
                 this.storePassword(answer)
-                .then(resolve)
+                .then(()=>{
+                    console.log("password set up!")
+                    return answer
+                })
                 .catch(reject)
             })
         })
