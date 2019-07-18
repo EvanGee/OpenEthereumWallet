@@ -1,11 +1,11 @@
 
 This app is a work in progress, probably one of my most usefull ones to date. Basically, what it is a crypto wallet that can store and execute smart contracts.
 
-It is desgined to be the backend of a wallet app, the idea is that other apps can call into it and use your keys to sign contracts transactions.
-(it will ask you for authentication from standard in and out if you set that up in the conf.js file)
+It is desgined to be the backend of a wallet app, the idea is that other apps can call into it and use your keys to sign contracts transactions. It is designed to have it's standard IO and standard OUT be wrapped by a front end application. But you can use it headless fine. (it will ask you for authentication from standard in and out if you set that up in the conf.js file)
+
 
 you can use it however you want, I wanted to give back to the Ethereum community a little bit with this, I'm not sure how
-useful it will be in the futures, check out Cleff, it does a similar thing I think. But there are more devs on it than just me.
+useful it will be in the futures, check out Cleff, it does a similar thing I think.
 
 
 # running 
@@ -18,7 +18,8 @@ $node App.js
 # API
 Parameters are the application-type/json body of your request
 every api responses includes a json string "{action:endpoint, payload:response} format, so it is easy to structure
-in a front end application, like if you were using React/redux for instance
+in a front end application, like if you were using React/redux for instance. If something goes wrong, it will
+response with an {action:"error", paload: err}.
 
 
 ## Accounts:  
@@ -37,7 +38,7 @@ returns: {action:"getDefault", payload: defaultAddress}
   
 ### GET __**/newAccount**__  
 Paramaters: None  
-returns: {action:"newAccount", payload: publicAddress}  
+returns: {action:"newAccount", payload: address}  
   
 ### POST __**/getBalances**__   
 Paramaters: 
