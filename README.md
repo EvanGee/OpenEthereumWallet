@@ -165,8 +165,9 @@ returns {actions: 'getCurrentProvider', payload: currentProvider})
 
 
 ### ps
-If you feeling like helpig pay off my student loans, you can donate to  
+If you feeling like helping pay off my student loans, you can donate to  
 0x1236354b2478AB8B4e681209BBb7ea14D3843C11  
-This would be a really big help. Thank you for reaching the bottom of the readme!!  
+This would be a really big help. Anyway, thank you for reaching the bottom of the readme!!  
+if you find any bugs, pop open an issue! that would also help me out!
 best of luck! 
 
