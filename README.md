@@ -164,8 +164,9 @@ returns {actions: 'getCurrentProvider', payload: currentProvider})
 
 
 
-If you feeling like helpig pay off my student loans, feel free to give to 
-0x1236354b2478AB8B4e681209BBb7ea14D3843C11
-This would be a really big help actually. Thank you for reaching the bottom of the readme!!
-best of luck!
+### ps
+If you feeling like helpig pay off my student loans, you can donate to  
+0x1236354b2478AB8B4e681209BBb7ea14D3843C11  
+This would be a really big help. Thank you for reaching the bottom of the readme!!  
+best of luck! 
 
